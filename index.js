@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const PORT = 8000;
+const PORT = 8080;
 
 app.get('/', (req, res) => {
     res.send('Hello from Kubernetes! Your CI/CD pipeline is working! 🚀');
