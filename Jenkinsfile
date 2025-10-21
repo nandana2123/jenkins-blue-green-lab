@@ -8,7 +8,7 @@ pipeline {
     }
 
     stages {
-        stage('1. Build & Push Docker Image') { // This is now the first stage
+        stage('1. Build & Push Docker Image') {
             steps {
                 script {
                     echo "Building and pushing Docker image: ${DOCKER_IMAGE_NAME}:${BUILD_NUMBER}"
@@ -20,15 +20,15 @@ pipeline {
             }
         }
 
-        stage('2. Blue-Green Deployment to Kubernetes') { // This is now the second stage
+        stage('2. Blue-Green Deployment to Kubernetes') {
             steps {
                 script {
                     withKubeConfig([credentialsId: KUBECONFIG_ID]) {
                         // --- 1. Determine current live color ---
                         echo "Checking live service color..."
-                        def currentColor = sh(returnStdout: true, script: "kubectl get service my-app-service -o jsonpath='{.spec.selector.version}'").trim()
+                        // The "|| true" ensures this command doesn't fail the build if the service doesn't exist yet
+                        def currentColor = sh(returnStdout: true, script: "kubectl get service my-app-service -o jsonpath='{.spec.selector.version}' || true").trim()
 
-                        // Handle initial deployment where service might not exist
                         if (!currentColor) {
                             echo "Service not found or no version set. Defaulting to blue."
                             sh 'kubectl apply -f service.yaml'
