@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        docker 'docker-latest' // <-- ADD THIS SECTION
+    }
+
     environment {
         DOCKERHUB_CREDENTIALS_ID = 'dockerhub-credentials'
         KUBECONFIG_ID            = 'kubeconfig'
