@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        docker 'docker-latest' // <-- ADD THIS SECTION
+        dockerTool 'docker-latest' // <-- ADD THIS SECTION
     }
 
     environment {
